@@ -8,7 +8,8 @@
 template <class T>
 T order_statistics(T *a, unsigned n, unsigned k)
 {
-	unsigned l = 1, r = n;
+	int Tmp = 0;
+	unsigned l = 1, r = n-1;
 	for ( ; ; )
 	{
 		if (r <= l + 1)
@@ -20,9 +21,16 @@ T order_statistics(T *a, unsigned n, unsigned k)
 			return a[k];
 		}
 
+
+
+
 		// упорядочиваем a[l], a[l+1], a[r]
 		unsigned mid = (l + r) >> 1;
 		swap(a[mid], a[l + 1]);
+
+
+
+
 		if (a[l] > a[r])
 			swap(a[l], a[r]);
 		if (a[l + 1] > a[r])
@@ -45,9 +53,25 @@ T order_statistics(T *a, unsigned n, unsigned k)
 			swap(a[i], a[j]);
 		}
 
+
+		/*printf("Iteration 2 #%d\n", Tmp);
+		for (int i = 0; i < ARR_SIZE; i++)
+		{
+			printf("%lf ", a[i]);
+		}
+		printf("\n");*/
+
 		// вставляем барьер
 		a[l + 1] = a[j];
 		a[j] = cur;
+
+
+	/*	printf("Iteration 3 #%d\n", Tmp);
+		for (int i = 0; i < ARR_SIZE; i++)
+		{
+			printf("%lf ", a[i]);
+		}
+		printf("\n");*/
 
 		// продолжаем работать в той части,
 		//	 которая должна содержать искомый элемент
@@ -56,5 +80,12 @@ T order_statistics(T *a, unsigned n, unsigned k)
 		if (j <= k)
 			l = i;
 
+		/*printf("Iteration 4 #%d\n",Tmp);
+		for (int i = 0; i < ARR_SIZE; i++)
+		{
+			printf("%lf ", a[i]);
+		}
+		printf("\n");
+		Tmp++;*/
 	}
 }

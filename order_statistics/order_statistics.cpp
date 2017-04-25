@@ -105,15 +105,38 @@ void print_array(double *arr, int size, string label = "print_array")
 	cout << endl;
 }
 
+template<class T>
+void bubbleSort(T a[], long size) {
+	long i, j;
+	T x;
+
+	for (i = 0; i < size; i++) {            // i - номер прохода
+		for (j = size - 1; j > i; j--) {     // внутренний цикл прохода
+			if (a[j - 1] > a[j]) {
+				x = a[j - 1]; a[j - 1] = a[j]; a[j] = x;
+			}
+		}
+	}
+}
+
 int main()
 {
 	srand(time(0));
 
 	double *arr_for_order_stat = new double [ARR_SIZE];
+	double *testarray = new double[ARR_SIZE];
 	unsigned k;
 
-	init_arr_randomize(arr_for_order_stat, ARR_SIZE);
+	for (int i = 0; i < ARR_SIZE; i++)
+	{
+		arr_for_order_stat[i] = (double)rand() / (double)RAND_MAX;
+		testarray[i] = arr_for_order_stat[i];
+
+	}
 	print_array(arr_for_order_stat, ARR_SIZE, "generated array");
+	bubbleSort(testarray, ARR_SIZE);
+	print_array(testarray, ARR_SIZE, "sorted array");
+	
 
 	cout << "Insert the k - number of order" << endl;
 	cin >> k;
@@ -121,6 +144,16 @@ int main()
 	//double result = order_stat(arr_for_order_stat, ARR_SIZE, k); // мое адаптированное
 	double result = order_statistics(arr_for_order_stat, ARR_SIZE, k); // копипаст с сайта
 	
+	
+	//bubbleSort(arr_for_order_stat, ARR_SIZE);
+	/*printf("\n");
+	for (int i = 0; i < ARR_SIZE; i++)
+	{
+		printf("%lf ", arr_for_order_stat[i]);
+	}
+	printf("\n");*/
+
+
 	cout << k << "-th order statistics is = " << result << endl;
 
 	system("pause");
