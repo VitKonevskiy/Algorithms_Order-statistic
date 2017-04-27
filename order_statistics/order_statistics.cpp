@@ -7,7 +7,8 @@
 using namespace std;
 
 #define RAND_MAX 1000
-static unsigned ARR_SIZE = 10;
+#define PRINT_LIMIT 20
+static unsigned ARR_SIZE = 4;
 
 double order_stat(double *input_array, int size, int k)
 {
@@ -95,6 +96,13 @@ void init_arr_randomize(double *arr, int size)
 	}
 }
 
+static int compare(const void * a, const void * b)
+{
+	if (*(double*)a > *(double*)b) return 1;
+	else if (*(double*)a < *(double*)b) return -1;
+	else return 0;
+}
+
 void print_array(double *arr, int size, string label = "print_array")
 {
 	cout << label << endl;
@@ -125,37 +133,55 @@ int main()
 
 	double *arr_for_order_stat = new double [ARR_SIZE];
 	double *testarray = new double[ARR_SIZE];
-	unsigned k;
+	unsigned k = ARR_SIZE + 1;
+	unsigned int qStart, qFinish;
+	unsigned int osStart, osFinish;
+	double qTime, osTime;
+	double qResult, osResult;
 
 	for (int i = 0; i < ARR_SIZE; i++)
 	{
-		arr_for_order_stat[i] = (double)rand() / (double)RAND_MAX;
-		testarray[i] = arr_for_order_stat[i];
-
+		testarray[i] = arr_for_order_stat[i] = (double)rand() / (double)RAND_MAX;
 	}
-	print_array(arr_for_order_stat, ARR_SIZE, "generated array");
-	bubbleSort(testarray, ARR_SIZE);
-	print_array(testarray, ARR_SIZE, "sorted array");
-	
 
-	cout << "Insert the k - number of order" << endl;
-	cin >> k;
-
-	//double result = order_stat(arr_for_order_stat, ARR_SIZE, k); // мое адаптированное
-	double result = order_statistics(arr_for_order_stat, ARR_SIZE, k); // копипаст с сайта
-	
-	
-	//bubbleSort(arr_for_order_stat, ARR_SIZE);
-	/*printf("\n");
-	for (int i = 0; i < ARR_SIZE; i++)
+	if (ARR_SIZE <= PRINT_LIMIT)
 	{
-		printf("%lf ", arr_for_order_stat[i]);
+		print_array(arr_for_order_stat, ARR_SIZE, "generated array");
 	}
-	printf("\n");*/
+	
+	while (k <= 0 || k > ARR_SIZE)
+	{
+		cout << "Insert the k - number of order" << endl;
+		cin >> k;
+	}
 
+	qStart = clock();
+	qsort(testarray, ARR_SIZE, sizeof(double), compare);
+	qResult = testarray[k - 1];
+	qFinish = clock();
+	qTime = (double)(qFinish - qStart) / 1000.0;
 
-	cout << k << "-th order statistics is = " << result << endl;
+	if (ARR_SIZE <= PRINT_LIMIT)
+	{
+		print_array(testarray, ARR_SIZE, "[Debug] sorted by qsort");
+	}
+	osStart = clock();
+	osResult = order_statistics(arr_for_order_stat, ARR_SIZE, k);
+	osFinish = clock();
+	osTime = (double)(osFinish - osStart) / 1000.0;
 
+	cout << "----- Order statistics -----" << endl;
+	cout << k << "-th order statistics is = " << osResult << endl;
+	cout << "Time = " << osTime << " sec" << endl;
+	cout << endl;
+	cout << "----------- QSORT ----------" << endl;
+	cout << k << "-th order statistics is = " << qResult  << endl;
+	cout << "Time = " << qTime << " sec" << endl;
+	cout << endl;
+	cout << (osResult == qResult ? "true" : "else") << endl;
+
+	delete[] arr_for_order_stat;
+	delete[] testarray;
 	system("pause");
     return 0;
 }

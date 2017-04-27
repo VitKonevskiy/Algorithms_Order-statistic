@@ -9,8 +9,8 @@ template <class T>
 T order_statistics(T *a, unsigned n, unsigned k)
 {
 	int Tmp = 0;
-	unsigned l = 1, r = n-1;
-	for ( ; ; )
+	unsigned l = 1, r = n - 1;
+	for (; ; )
 	{
 		if (r <= l + 1)
 		{
@@ -57,7 +57,7 @@ T order_statistics(T *a, unsigned n, unsigned k)
 		/*printf("Iteration 2 #%d\n", Tmp);
 		for (int i = 0; i < ARR_SIZE; i++)
 		{
-			printf("%lf ", a[i]);
+		printf("%lf ", a[i]);
 		}
 		printf("\n");*/
 
@@ -66,10 +66,10 @@ T order_statistics(T *a, unsigned n, unsigned k)
 		a[j] = cur;
 
 
-	/*	printf("Iteration 3 #%d\n", Tmp);
+		/*	printf("Iteration 3 #%d\n", Tmp);
 		for (int i = 0; i < ARR_SIZE; i++)
 		{
-			printf("%lf ", a[i]);
+		printf("%lf ", a[i]);
 		}
 		printf("\n");*/
 
@@ -83,7 +83,7 @@ T order_statistics(T *a, unsigned n, unsigned k)
 		/*printf("Iteration 4 #%d\n",Tmp);
 		for (int i = 0; i < ARR_SIZE; i++)
 		{
-			printf("%lf ", a[i]);
+		printf("%lf ", a[i]);
 		}
 		printf("\n");
 		Tmp++;*/
