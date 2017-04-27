@@ -9,7 +9,7 @@ template <class T>
 T order_statistics(T *a, unsigned n, unsigned k)
 {
 	int Tmp = 0;
-	unsigned l = 1, r = n - 1;
+	unsigned l = 0, r = n - 1;
 	for (; ; )
 	{
 		if (r <= l + 1)
@@ -20,14 +20,24 @@ T order_statistics(T *a, unsigned n, unsigned k)
 				swap(a[l], a[r]);
 			return a[k];
 		}
-
+		/*printf("Iteration 0 #%d\n", Tmp);
+		for (int i = 0; i < ARR_SIZE; i++)
+		{
+			printf("%lf ", a[i]);
+		}
+		printf("\n");*/
 
 
 
 		// упорядочиваем a[l], a[l+1], a[r]
 		unsigned mid = (l + r) >> 1;
 		swap(a[mid], a[l + 1]);
-
+		/*printf("Iteration 1 #%d\n", Tmp);
+		for (int i = 0; i < ARR_SIZE; i++)
+		{
+		printf("%lf ", a[i]);
+		}
+		printf("\n");*/
 
 
 

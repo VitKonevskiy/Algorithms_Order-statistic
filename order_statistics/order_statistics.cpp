@@ -3,14 +3,14 @@
 
 #include "stdafx.h"
 #include "test.h"
-
+#include <Windows.h>
 using namespace std;
 
 #define RAND_MAX 1000
 #define PRINT_LIMIT 20
-static unsigned ARR_SIZE = 4;
+static unsigned ARR_SIZE = 7;
 
-double order_stat(double *input_array, int size, int k)
+/*double order_stat(double *input_array, int size, int k)
 {
 	int left_pos = 1;
 	int right_pos = size;
@@ -87,6 +87,7 @@ double order_stat(double *input_array, int size, int k)
 			left_pos = i;
 	}
 }
+*/
 
 void init_arr_randomize(double *arr, int size)
 {
@@ -134,11 +135,10 @@ int main()
 	double *arr_for_order_stat = new double [ARR_SIZE];
 	double *testarray = new double[ARR_SIZE];
 	unsigned k = ARR_SIZE + 1;
-	unsigned int qStart, qFinish;
-	unsigned int osStart, osFinish;
-	double qTime, osTime;
+	long int qStart, qFinish;
+	long int osStart, osFinish;
+	long int qTime, osTime;
 	double qResult, osResult;
-
 	for (int i = 0; i < ARR_SIZE; i++)
 	{
 		testarray[i] = arr_for_order_stat[i] = (double)rand() / (double)RAND_MAX;
@@ -149,40 +149,43 @@ int main()
 		print_array(arr_for_order_stat, ARR_SIZE, "generated array");
 	}
 	
-	while (k <= 0 || k > ARR_SIZE)
+	while (k < 0 || k > ARR_SIZE)
 	{
 		cout << "Insert the k - number of order" << endl;
 		cin >> k;
 	}
 
-	qStart = clock();
+	qStart = GetTickCount();
 	qsort(testarray, ARR_SIZE, sizeof(double), compare);
-	qResult = testarray[k - 1];
-	qFinish = clock();
-	qTime = (double)(qFinish - qStart) / 1000.0;
+	qResult = testarray[k];
+	qFinish = GetTickCount();
+	qTime = qFinish - qStart;
 
 	if (ARR_SIZE <= PRINT_LIMIT)
 	{
 		print_array(testarray, ARR_SIZE, "[Debug] sorted by qsort");
 	}
-	osStart = clock();
+	osStart= GetTickCount();
+	
 	osResult = order_statistics(arr_for_order_stat, ARR_SIZE, k);
-	osFinish = clock();
-	osTime = (double)(osFinish - osStart) / 1000.0;
+	osFinish = GetTickCount();
+	osTime = osFinish - osStart;
 
 	cout << "----- Order statistics -----" << endl;
 	cout << k << "-th order statistics is = " << osResult << endl;
-	cout << "Time = " << osTime << " sec" << endl;
+	//cout << "Time = " << osTime << " sec" << endl;
+	printf("Time = %d\n", osTime);
 	cout << endl;
 	cout << "----------- QSORT ----------" << endl;
 	cout << k << "-th order statistics is = " << qResult  << endl;
-	cout << "Time = " << qTime << " sec" << endl;
+	printf("Time = %d\n", qTime);
+	//cout << "Time = " << qTime << " sec" << endl;
 	cout << endl;
 	cout << (osResult == qResult ? "true" : "else") << endl;
 
 	delete[] arr_for_order_stat;
 	delete[] testarray;
-	system("pause");
+	//system("pause");
     return 0;
 }
 
